@@ -22,6 +22,7 @@ import { DeletePostCommand } from './usecases/commands/delete-post.command'
 
 export interface GetAllPostsQueryParams {
   theme?: string
+  title?: string
   pageNumber?: number
   pageSize?: number
 }

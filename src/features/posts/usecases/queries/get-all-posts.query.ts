@@ -5,16 +5,7 @@ import {
 } from '../../../../base/interlayer-object'
 import { Paginator } from '../../../../base/paginator.type'
 import { PostsQueryRepository } from '../../repositories/posts.query.repository'
-
-export interface PostViewModel {
-  id: string
-  theme?: string
-  title: string
-  description: string
-  content: string
-  createdAt: Date
-  updatedAt: Date
-}
+import { PostViewModel } from '../../posts.models'
 
 export class GetAllPostsQuery {
   constructor(

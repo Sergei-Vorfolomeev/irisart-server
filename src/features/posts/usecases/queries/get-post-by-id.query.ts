@@ -4,7 +4,7 @@ import {
   StatusCode,
 } from '../../../../base/interlayer-object'
 import { PostsQueryRepository } from '../../repositories/posts.query.repository'
-import { PostViewModel } from './get-all-posts.query'
+import { PostViewModel } from '../../posts.models'
 
 export class GetPostByIdQuery {
   constructor(public postId: string) {}

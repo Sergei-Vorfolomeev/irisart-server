@@ -6,6 +6,16 @@ export interface PostInputModel {
   image?: string
 }
 
+export interface PostViewModel {
+  id: string
+  theme?: string
+  title: string
+  description: string
+  content: string
+  createdAt: Date
+  updatedAt: Date
+}
+
 export interface PostDbModel {
   id?: string
   title: string

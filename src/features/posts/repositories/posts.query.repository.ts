@@ -1,9 +1,9 @@
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { ILike, Repository } from 'typeorm'
 import { GetAllPostsQueryParams } from '../posts.controller'
-import { PostViewModel } from '../usecases/queries/get-all-posts.query'
 import { Paginator } from '../../../base/paginator.type'
 import { Post } from '../post.entity'
+import { PostViewModel } from '../posts.models'
 
 export class PostsQueryRepository {
   constructor(
@@ -12,13 +12,18 @@ export class PostsQueryRepository {
   ) {}
 
   async getAll({
-    theme = 'all',
+    theme,
+    title,
     pageSize = 10,
     pageNumber = 1,
   }: GetAllPostsQueryParams): Promise<Paginator<PostViewModel[]> | null> {
     try {
-      const whereCondition: Record<string, any> = {
-        theme,
+      const whereCondition: Record<string, any> = {}
+      if (title) {
+        whereCondition.title = ILike(`%${title}%`)
+      }
+      if (theme) {
+        whereCondition.theme = theme
       }
 
       const [posts, total] = await this.postsOrmRepo.findAndCount({

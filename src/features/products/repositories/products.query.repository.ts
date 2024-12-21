@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { ILike, Repository } from 'typeorm'
 import { GetAllProductsQueryParams } from '../dto/get-all-products-query-params'
 import { Paginator } from '../../../base/paginator.type'
+import { ProductsCategory } from '../types/products-type.enum'
 
 export class ProductsQueryRepository {
   constructor(
@@ -19,14 +20,14 @@ export class ProductsQueryRepository {
     inStock,
   }: GetAllProductsQueryParams): Promise<Paginator<ProductViewModel[]> | null> {
     try {
-      const whereCondition: any = {
+      const whereCondition: Record<string, any> = {
         name: ILike(`%${term}%`),
       }
 
-      if (category) {
+      if (category !== ProductsCategory.all) {
         whereCondition.category = category
       }
-      if (inStock !== undefined) {
+      if (inStock) {
         whereCondition.inStock = inStock
       }
 
