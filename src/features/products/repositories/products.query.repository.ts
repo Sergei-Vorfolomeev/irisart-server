@@ -3,6 +3,7 @@ import { Product } from '../product.entity'
 import { InjectRepository } from '@nestjs/typeorm'
 import { ILike, Repository } from 'typeorm'
 import { GetAllProductsQueryParams } from '../dto/get-all-products-query-params'
+import { Paginator } from '../../../base/paginator.type'
 
 export class ProductsQueryRepository {
   constructor(
@@ -13,10 +14,10 @@ export class ProductsQueryRepository {
   async getAll({
     term = '',
     category,
-    limit = 10,
-    offset = 0,
+    pageSize = 10,
+    pageNumber = 1,
     inStock,
-  }: GetAllProductsQueryParams): Promise<ProductViewModel[] | null> {
+  }: GetAllProductsQueryParams): Promise<Paginator<ProductViewModel[]> | null> {
     try {
       const whereCondition: any = {
         name: ILike(`%${term}%`),
@@ -26,18 +27,27 @@ export class ProductsQueryRepository {
         whereCondition.category = category
       }
       if (inStock !== undefined) {
-        whereCondition.isAvailable = inStock
+        whereCondition.inStock = inStock
       }
 
       const [products, total] = await this.productsOrmRepo.findAndCount({
         where: whereCondition,
-        skip: offset,
-        take: limit,
+        skip: (pageNumber - 1) * pageSize,
+        take: pageSize,
         order: {
           created_at: 'DESC',
         },
       })
-      return products.map(this.mapToView)
+
+      const pagesCount = total === 0 ? 1 : Math.ceil(total / pageSize)
+
+      return {
+        items: products.map(this.mapToView),
+        page: pageNumber,
+        pageSize: pageSize,
+        pagesCount: pagesCount,
+        totalCount: total,
+      }
     } catch (e) {
       console.error(e)
       return null

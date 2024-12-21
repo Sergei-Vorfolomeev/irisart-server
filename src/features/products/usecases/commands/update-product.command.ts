@@ -24,8 +24,8 @@ export class UpdateProductCommandHandler implements ICommandHandler {
   }: UpdateProductCommand): Promise<InterLayerObject> {
     const { name, description, category, price, image, inStock } = product
 
-    const productExists = await this.productsRepository.getById(productId)
-    if (!productExists) {
+    const existedProduct = await this.productsRepository.getById(productId)
+    if (!existedProduct) {
       return new InterLayerObject(
         StatusCode.NotFound,
         'Товар с указанным id не найден',
@@ -33,13 +33,13 @@ export class UpdateProductCommandHandler implements ICommandHandler {
     }
 
     const editedProduct: ProductDbModel = {
-      id: productExists.id,
+      ...existedProduct,
       name,
       description,
       category,
       price,
       image,
-      inStock: inStock,
+      inStock,
     }
     const updatedProduct =
       await this.productsRepository.saveProduct(editedProduct)

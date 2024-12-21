@@ -6,13 +6,14 @@ import {
 } from '../../../../base/interlayer-object'
 import { ProductViewModel } from '../../dto/product.view.model'
 import { ProductsCategory } from '../../types/products-type.enum'
+import { Paginator } from '../../../../base/paginator.type'
 
 export class GetAllProductsQuery {
   constructor(
     public term?: string,
     public category?: ProductsCategory,
-    public offset?: number,
-    public limit?: number,
+    public pageNumber?: number,
+    public pageSize?: number,
     public inStock?: boolean,
   ) {}
 }
@@ -25,7 +26,7 @@ export class GetAllProductsQueryHandler implements IQueryHandler {
 
   async execute(
     queryParams: GetAllProductsQuery,
-  ): Promise<InterLayerObject<ProductViewModel[]>> {
+  ): Promise<InterLayerObject<Paginator<ProductViewModel[]>>> {
     const products = await this.productsQueryRepository.getAll(queryParams)
     if (!products) {
       return new InterLayerObject(
@@ -33,7 +34,7 @@ export class GetAllProductsQueryHandler implements IQueryHandler {
         'Ошибка запроса товаров',
       )
     }
-    return new InterLayerObject<ProductViewModel[]>(
+    return new InterLayerObject<Paginator<ProductViewModel[]>>(
       StatusCode.Success,
       null,
       products,

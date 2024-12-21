@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import configuration, { ConfigType } from './settings/configuration'
-import { UsersModule } from './features/users/users.module'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { AuthModule } from './features/auth/auth.module'
 import { ProductsModule } from './features/products/products.module'
 import { JwtModule } from './base/adapters/jwt/jwt.module'
+import { PostsModule } from './features/posts/posts.module'
 
 @Module({
   imports: [
@@ -32,6 +32,7 @@ import { JwtModule } from './base/adapters/jwt/jwt.module'
     JwtModule,
     AuthModule,
     ProductsModule,
+    PostsModule,
   ],
   controllers: [],
   providers: [],

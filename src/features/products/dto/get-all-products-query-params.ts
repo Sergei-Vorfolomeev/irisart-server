@@ -15,12 +15,12 @@ export class GetAllProductsQueryParams {
   @IsInt()
   @IsOptional()
   @Type(() => Number)
-  limit?: number
+  pageSize?: number
 
   @IsInt()
   @IsOptional()
   @Type(() => Number)
-  offset?: number
+  pageNumber?: number
 
   @IsBoolean()
   @IsOptional()

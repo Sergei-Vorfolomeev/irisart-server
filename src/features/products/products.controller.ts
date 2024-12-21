@@ -32,13 +32,19 @@ export class ProductsController {
   @HttpCode(200)
   async getAllProducts(
     @Query()
-    { term, category, offset, limit, inStock }: GetAllProductsQueryParams,
+    {
+      term,
+      category,
+      pageNumber,
+      pageSize,
+      inStock,
+    }: GetAllProductsQueryParams,
   ) {
     const query = new GetAllProductsQuery(
       term,
       category,
-      offset,
-      limit,
+      pageNumber,
+      pageSize,
       inStock,
     )
     const {

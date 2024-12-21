@@ -16,6 +16,7 @@ export class DeleteProductCommandHandler implements ICommandHandler {
   async execute({
     productId,
   }: DeleteProductCommand): Promise<InterLayerObject> {
+    // fixme этот запрос разве нужен?
     const product = await this.productsRepository.getById(productId)
     if (!product) {
       return new InterLayerObject(
